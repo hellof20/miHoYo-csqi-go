@@ -26,3 +26,5 @@ bin/csqi \
 
 ## Result
 程序运行后会生成output.csv，第一个字段为ID，第二个字段为大模型生成的客诉类别，第三个字段为人工的客诉类别
+
+<img width="955" alt="image" src="https://github.com/user-attachments/assets/8ea67058-0c4c-4e4d-bf75-398f451bafd8" />
