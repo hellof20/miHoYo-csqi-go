@@ -135,47 +135,6 @@ const (
 `
 )
 
-func readCSVToStruct(filename string) ([]Record, error) {
-	file, err := os.Open(filename)
-	if err != nil {
-		log.Println("无法打开文件:", err)
-		return nil, err
-	}
-	defer file.Close()
-
-	reader := csv.NewReader(file)
-
-	// 跳过标题行
-	_, err = reader.Read()
-	if err != nil {
-		log.Println("读取标题失败:", err)
-		return nil, err
-	}
-
-	var records []Record
-
-	for {
-		row, err := reader.Read()
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			log.Println("读取行错误:", err)
-			return nil, err
-		}
-		record := Record{
-			ID:      row[0],
-			Result:  row[1],
-			Comment: row[2],
-			Label:   row[3],
-			Content: row[4],
-		}
-		records = append(records, record)
-	}
-	return records, nil
-
-}
-
 func main() {
 	file := flag.String("csv", "", "specify test csv file name")
 	location := flag.String("location", "", "specify gcp location")
@@ -301,4 +260,45 @@ func getSecondLabel(firstcatalog string, llm_api LLMAPI, content string) (Second
 	var secondcatalog SecondCatalog
 	json.Unmarshal([]byte(second_invoked_response), &secondcatalog)
 	return secondcatalog, nil
+}
+
+func readCSVToStruct(filename string) ([]Record, error) {
+	file, err := os.Open(filename)
+	if err != nil {
+		log.Println("无法打开文件:", err)
+		return nil, err
+	}
+	defer file.Close()
+
+	reader := csv.NewReader(file)
+
+	// 跳过标题行
+	_, err = reader.Read()
+	if err != nil {
+		log.Println("读取标题失败:", err)
+		return nil, err
+	}
+
+	var records []Record
+
+	for {
+		row, err := reader.Read()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			log.Println("读取行错误:", err)
+			return nil, err
+		}
+		record := Record{
+			ID:      row[0],
+			Result:  row[1],
+			Comment: row[2],
+			Label:   row[3],
+			Content: row[4],
+		}
+		records = append(records, record)
+	}
+	return records, nil
+
 }
